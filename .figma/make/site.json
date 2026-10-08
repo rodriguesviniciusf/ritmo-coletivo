@@ -1,0 +1,11 @@
+{
+  "title": "RITMO COLETIVO",
+  "description": "Generate personalized running training plans by inputting goals and fitness levels, with dynamic schedules and PDF export for easy tracking.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

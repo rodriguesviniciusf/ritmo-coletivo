@@ -1,0 +1,1291 @@
+<!doctype html>
+<html lang="pt-BR" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Gerador gratuito de planos personalizados para grupos de corrida."
+    />
+    <meta name="theme-color" content="#0f172a" />
+    <title>Ritmo Coletivo — Plano de Corrida</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              ink: "#07111f",
+            },
+            boxShadow: {
+              glow: "0 18px 60px rgba(245, 158, 11, 0.16)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background:
+          radial-gradient(circle at 12% 8%, rgba(245, 158, 11, 0.1), transparent 25rem),
+          radial-gradient(circle at 88% 30%, rgba(249, 115, 22, 0.08), transparent 22rem),
+          #07111f;
+      }
+
+      .field-label {
+        display: block;
+        margin-bottom: 0.55rem;
+        color: #e2e8f0;
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      .field-control {
+        width: 100%;
+        border: 1px solid #334155;
+        border-radius: 0.8rem;
+        background: #111c2e;
+        padding: 0.8rem 0.95rem;
+        color: #f8fafc;
+        outline: none;
+        transition:
+          border-color 160ms ease,
+          box-shadow 160ms ease,
+          background 160ms ease;
+      }
+
+      .field-control:hover {
+        border-color: #475569;
+      }
+
+      .field-control:focus {
+        border-color: #f59e0b;
+        background: #142033;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+      }
+
+      .field-control::placeholder {
+        color: #64748b;
+      }
+
+      select.field-control {
+        color-scheme: dark;
+      }
+
+      .radio-card:has(input:checked) {
+        border-color: #f59e0b;
+        background: rgba(245, 158, 11, 0.08);
+        color: #fbbf24;
+      }
+
+      .radio-card:has(input:focus-visible) {
+        outline: 2px solid #fbbf24;
+        outline-offset: 2px;
+      }
+
+      .radio-card:has(input:disabled) {
+        cursor: not-allowed;
+        opacity: 0.42;
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 12mm;
+        }
+
+        body {
+          background: #fff !important;
+          color: #0f172a !important;
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        #form-view,
+        #app-header,
+        #plan-actions,
+        #site-footer,
+        .no-print {
+          display: none !important;
+        }
+
+        #plan-view {
+          display: block !important;
+          max-width: none !important;
+          padding: 0 !important;
+        }
+
+        #print-plan {
+          border: 0 !important;
+          background: #fff !important;
+          box-shadow: none !important;
+        }
+
+        .print-header {
+          background: #0f172a !important;
+          color: #fff !important;
+        }
+
+        .week-card,
+        .tips-card,
+        .medical-card {
+          break-inside: avoid;
+          border-color: #cbd5e1 !important;
+          background: #fff !important;
+          color: #0f172a !important;
+        }
+
+        .week-card {
+          page-break-inside: avoid;
+        }
+
+        .print-dark-text {
+          color: #334155 !important;
+        }
+
+        .workout-row {
+          border-color: #e2e8f0 !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen font-sans text-slate-100 antialiased">
+    <header id="app-header" class="border-b border-slate-800/80 bg-slate-950/45 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
+        <a id="home-link" href="#" class="flex items-center gap-3" aria-label="Ritmo Coletivo — início">
+          <span
+            class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 text-slate-950 shadow-glow"
+          >
+            <svg
+              aria-hidden="true"
+              class="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M13 4l3 2-2 3 3 2" />
+              <path d="M10 9l3 2-2 4-5 4" />
+              <path d="M6 11l4-2 2-3" />
+              <path d="M13 15l4 4" />
+            </svg>
+          </span>
+          <span>
+            <strong class="block text-sm font-extrabold uppercase tracking-[0.16em] text-white"
+              >Ritmo Coletivo</strong
+            >
+            <span class="block text-xs text-slate-400">Seu próximo desafio começa aqui</span>
+          </span>
+        </a>
+        <button
+          id="office-button"
+          type="button"
+          class="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-xs font-bold text-amber-300 transition hover:border-amber-400/60 hover:bg-amber-400/15"
+        >
+          <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          Área do grupo
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section id="form-view" class="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-16">
+        <div class="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div class="lg:sticky lg:top-8">
+            <div
+              class="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-400/25 bg-amber-400/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-amber-300"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+              Treine com direção
+            </div>
+            <h1 class="max-w-xl text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl">
+              Um plano de corrida feito para o
+              <span class="text-amber-400">seu ritmo.</span>
+            </h1>
+            <p class="mt-5 max-w-lg text-base leading-7 text-slate-400 sm:text-lg">
+              Conte onde você está e aonde quer chegar. Em poucos segundos, você recebe uma
+              programação progressiva para correr com mais constância e segurança.
+            </p>
+
+            <div class="mt-8 grid grid-cols-3 gap-3">
+              <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+                <strong class="block text-xl font-extrabold text-white">3</strong>
+                <span class="mt-1 block text-xs leading-4 text-slate-500">níveis de partida</span>
+              </div>
+              <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+                <strong class="block text-xl font-extrabold text-white">12</strong>
+                <span class="mt-1 block text-xs leading-4 text-slate-500">semanas de evolução</span>
+              </div>
+              <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+                <strong class="block text-xl font-extrabold text-white">PDF</strong>
+                <span class="mt-1 block text-xs leading-4 text-slate-500">pronto para salvar</span>
+              </div>
+            </div>
+
+            <div class="mt-8 flex items-start gap-3 border-l-2 border-amber-500/50 pl-4">
+              <svg
+                aria-hidden="true"
+                class="mt-0.5 h-5 w-5 shrink-0 text-amber-400"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+              <p class="text-sm leading-6 text-slate-400">
+                Respeite seus limites. Em caso de dor, lesão ou condição de saúde, procure
+                orientação médica antes de iniciar.
+              </p>
+            </div>
+          </div>
+
+          <div class="overflow-hidden rounded-3xl border border-slate-700/80 bg-slate-900/85 shadow-2xl">
+            <div class="border-b border-slate-800 px-6 py-6 sm:px-8">
+              <div class="flex items-center gap-4">
+                <span
+                  class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-amber-400 text-sm font-extrabold text-slate-950"
+                  >1</span
+                >
+                <div>
+                  <h2 class="text-xl font-bold text-white">Monte seu perfil</h2>
+                  <p class="mt-1 text-sm text-slate-400">Leva menos de 2 minutos.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Para integrar ao Formspree, preencha data-endpoint com a URL do seu formulário. -->
+            <form id="runner-form" data-endpoint="" method="POST" class="space-y-6 p-6 sm:p-8">
+              <div>
+                <label for="name" class="field-label">Nome completo</label>
+                <input
+                  id="name"
+                  name="nome"
+                  class="field-control"
+                  type="text"
+                  autocomplete="name"
+                  placeholder="Como podemos chamar você?"
+                  required
+                />
+              </div>
+
+              <div class="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <label for="distance" class="field-label">Objetivo de distância</label>
+                  <select id="distance" name="distancia" class="field-control" required>
+                    <option value="5">5 km</option>
+                    <option value="10">10 km</option>
+                    <option value="15">15 km</option>
+                    <option value="21">21 km — Meia maratona</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="deadline" class="field-label">Prazo para o desafio</label>
+                  <select id="deadline" name="prazo" class="field-control" required>
+                    <option value="1">1 mês</option>
+                    <option value="2">2 meses</option>
+                    <option value="3">3 meses</option>
+                  </select>
+                </div>
+              </div>
+
+              <fieldset>
+                <legend class="field-label">Frequência semanal de treino</legend>
+                <div class="grid grid-cols-4 gap-2.5">
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-sm font-bold text-slate-300 transition"
+                  >
+                    <input class="sr-only" type="radio" name="frequencia" value="2" required />
+                    2x
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-sm font-bold text-slate-300 transition"
+                  >
+                    <input class="sr-only" type="radio" name="frequencia" value="3" checked />
+                    3x
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-sm font-bold text-slate-300 transition"
+                  >
+                    <input class="sr-only" type="radio" name="frequencia" value="4" />
+                    4x
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-sm font-bold text-slate-300 transition"
+                  >
+                    <input class="sr-only" type="radio" name="frequencia" value="5" />
+                    5x
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset id="training-days-fieldset">
+                <div class="mb-2 flex items-end justify-between gap-3">
+                  <legend class="field-label !mb-0">Quais são os melhores dias para treinar?</legend>
+                  <span id="day-choice-count" class="shrink-0 text-xs font-semibold text-amber-400"
+                    >3 de 3</span
+                  >
+                </div>
+                <p id="day-choice-hint" class="mb-3 text-xs leading-5 text-slate-500">
+                  Escolha 3 dias. O plano vai respeitar sua rotina.
+                </p>
+                <div class="grid grid-cols-4 gap-2 sm:grid-cols-7">
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-xs font-bold text-slate-300 transition"
+                  >
+                    <input class="sr-only training-day" type="checkbox" name="dias" value="1" />
+                    Seg
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-xs font-bold text-slate-300 transition"
+                  >
+                    <input
+                      class="sr-only training-day"
+                      type="checkbox"
+                      name="dias"
+                      value="2"
+                      checked
+                    />
+                    Ter
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-xs font-bold text-slate-300 transition"
+                  >
+                    <input class="sr-only training-day" type="checkbox" name="dias" value="3" />
+                    Qua
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-xs font-bold text-slate-300 transition"
+                  >
+                    <input
+                      class="sr-only training-day"
+                      type="checkbox"
+                      name="dias"
+                      value="4"
+                      checked
+                    />
+                    Qui
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-xs font-bold text-slate-300 transition"
+                  >
+                    <input class="sr-only training-day" type="checkbox" name="dias" value="5" />
+                    Sex
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-xs font-bold text-slate-300 transition"
+                  >
+                    <input class="sr-only training-day" type="checkbox" name="dias" value="6" />
+                    Sáb
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-2 py-3 text-center text-xs font-bold text-slate-300 transition"
+                  >
+                    <input
+                      class="sr-only training-day"
+                      type="checkbox"
+                      name="dias"
+                      value="7"
+                      checked
+                    />
+                    Dom
+                  </label>
+                </div>
+                <p id="day-choice-error" class="mt-3 hidden text-xs font-semibold text-red-400">
+                  Selecione a mesma quantidade de dias informada na frequência semanal.
+                </p>
+              </fieldset>
+
+              <div>
+                <label for="level" class="field-label">Nível / condição atual</label>
+                <select id="level" name="nivel" class="field-control" required>
+                  <option value="walk">Ando a maior parte do tempo</option>
+                  <option value="mixed">Corro metade e ando metade</option>
+                  <option value="run">Já corro de forma contínua</option>
+                </select>
+              </div>
+
+              <fieldset>
+                <legend class="field-label">Pratica fortalecimento ou musculação?</legend>
+                <div class="grid grid-cols-2 gap-3">
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-4 py-3 text-center text-sm font-semibold text-slate-300 transition"
+                  >
+                    <input class="sr-only" type="radio" name="fortalecimento" value="Sim" required />
+                    Sim, já pratico
+                  </label>
+                  <label
+                    class="radio-card cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-4 py-3 text-center text-sm font-semibold text-slate-300 transition"
+                  >
+                    <input
+                      class="sr-only"
+                      type="radio"
+                      name="fortalecimento"
+                      value="Não"
+                      checked
+                    />
+                    Ainda não
+                  </label>
+                </div>
+              </fieldset>
+
+              <div>
+                <label for="notes" class="field-label">
+                  Observações ou restrições médicas
+                  <span class="font-normal text-slate-500">(opcional)</span>
+                </label>
+                <textarea
+                  id="notes"
+                  name="observacoes"
+                  class="field-control min-h-28 resize-y"
+                  placeholder="Conte sobre dores, lesões, recomendações médicas ou algo que devemos considerar."
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                class="group flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-5 py-4 text-base font-extrabold text-slate-950 shadow-glow transition hover:-translate-y-0.5 hover:from-amber-300 hover:to-orange-400 focus:outline-none focus:ring-4 focus:ring-amber-400/30"
+              >
+                Gerar meu plano de treino
+                <svg
+                  aria-hidden="true"
+                  class="h-5 w-5 transition-transform group-hover:translate-x-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                >
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </button>
+              <p class="text-center text-xs leading-5 text-slate-500">
+                Seus dados ficam no seu navegador e não são armazenados por padrão.
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="plan-view" class="mx-auto hidden max-w-6xl px-5 py-8 sm:px-8 sm:py-12">
+        <div id="plan-actions" class="mb-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <button
+            id="edit-button"
+            type="button"
+            class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-3 text-sm font-bold text-slate-200 transition hover:border-slate-600 hover:bg-slate-700"
+          >
+            <svg
+              aria-hidden="true"
+              class="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M19 12H5M11 18l-6-6 6-6" />
+            </svg>
+            Editar respostas
+          </button>
+          <button
+            id="print-button"
+            type="button"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 py-3 text-sm font-extrabold text-slate-950 shadow-glow transition hover:bg-amber-300"
+          >
+            <svg
+              aria-hidden="true"
+              class="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+              <path d="M6 14h12v8H6z" />
+            </svg>
+            Salvar em PDF / Imprimir
+          </button>
+        </div>
+        <div
+          id="print-plan"
+          class="overflow-hidden rounded-3xl border border-slate-700 bg-slate-900 shadow-2xl"
+        ></div>
+      </section>
+
+      <section id="office-view" class="mx-auto hidden max-w-6xl px-5 py-8 sm:px-8 sm:py-12">
+        <div id="office-auth-view" class="mx-auto grid max-w-4xl overflow-hidden rounded-3xl border border-slate-700 bg-slate-900 shadow-2xl lg:grid-cols-[0.9fr_1.1fr]">
+          <div class="relative overflow-hidden bg-gradient-to-br from-amber-400 to-orange-600 p-7 text-slate-950 sm:p-10">
+            <div class="absolute -bottom-20 -right-20 h-64 w-64 rounded-full border-[40px] border-white/10"></div>
+            <div class="relative">
+              <span class="inline-flex rounded-full bg-slate-950/10 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.15em]">Só para o time</span>
+              <h1 class="mt-6 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">Todo treino conta. Melhor ainda quando o time acompanha.</h1>
+              <p class="mt-4 text-sm leading-6 text-slate-900/75">Registre sua corrida, mantenha a sequência e celebre a evolução dos colegas do escritório.</p>
+              <div class="mt-8 space-y-3 text-sm font-semibold">
+                <p class="flex items-center gap-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-slate-950 text-amber-400">1</span> Faça seu check-in</p>
+                <p class="flex items-center gap-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-slate-950 text-amber-400">2</span> Construa sua sequência</p>
+                <p class="flex items-center gap-3"><span class="grid h-7 w-7 place-items-center rounded-full bg-slate-950 text-amber-400">3</span> Incentive o time</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-7 sm:p-10">
+            <div class="mb-7">
+              <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-amber-400">Ritmo do escritório</p>
+              <h2 id="auth-title" class="mt-2 text-2xl font-extrabold text-white">Entrar no grupo</h2>
+              <p id="auth-description" class="mt-2 text-sm text-slate-400">Use seu nome de usuário e senha.</p>
+            </div>
+
+            <form id="office-auth-form" class="space-y-5">
+              <div id="register-name-field" class="hidden">
+                <label for="office-name" class="field-label">Nome completo</label>
+                <input id="office-name" name="office-name" class="field-control" type="text" autocomplete="name" placeholder="Ex.: Sylmar Oliveira" />
+              </div>
+              <div id="register-code-field" class="hidden">
+                <label for="office-invite-code" class="field-label">Código do escritório</label>
+                <input id="office-invite-code" name="office-invite-code" class="field-control" type="password" autocomplete="off" placeholder="Código compartilhado com o time" />
+                <p class="mt-2 text-xs text-slate-500">Necessário apenas para criar o primeiro acesso.</p>
+              </div>
+              <div>
+                <label for="office-username" class="field-label">Usuário</label>
+                <input id="office-username" name="office-username" class="field-control" type="text" autocomplete="username" autocapitalize="none" placeholder="Ex.: sylmar" required minlength="3" />
+              </div>
+              <div>
+                <label for="office-password" class="field-label">Senha</label>
+                <input id="office-password" name="office-password" class="field-control" type="password" autocomplete="current-password" placeholder="Mínimo de 6 caracteres" required minlength="6" />
+              </div>
+              <p id="auth-error" class="hidden rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300" role="alert"></p>
+              <button id="auth-submit" type="submit" class="flex w-full items-center justify-center rounded-xl bg-amber-400 px-5 py-3.5 text-sm font-extrabold text-slate-950 transition hover:bg-amber-300 disabled:cursor-wait disabled:opacity-60">Entrar</button>
+              <button id="auth-mode-toggle" type="button" class="w-full text-center text-sm font-semibold text-slate-400 transition hover:text-amber-300">Primeiro acesso? Criar minha conta</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="office-dashboard" class="hidden">
+          <div class="mb-7 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+            <div>
+              <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-amber-400">Ritmo do escritório</p>
+              <h1 id="dashboard-greeting" class="mt-2 text-3xl font-extrabold text-white">Olá!</h1>
+              <p class="mt-2 text-sm text-slate-400">Consistência vence pressa. Registre o treino de hoje.</p>
+            </div>
+            <button id="logout-button" type="button" class="w-fit rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-xs font-bold text-slate-300 transition hover:bg-slate-700">Sair da conta</button>
+          </div>
+
+          <div id="dashboard-loading" class="rounded-2xl border border-slate-800 bg-slate-900/70 p-10 text-center text-sm text-slate-400">Carregando o placar...</div>
+
+          <div id="dashboard-content" class="hidden space-y-6">
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <div class="rounded-2xl border border-slate-700 bg-slate-900 p-5"><span class="text-xs font-bold uppercase tracking-wider text-slate-500">Meus treinos na semana</span><strong id="stat-week" class="mt-3 block text-3xl font-extrabold text-white">0</strong></div>
+              <div class="rounded-2xl border border-slate-700 bg-slate-900 p-5"><span class="text-xs font-bold uppercase tracking-wider text-slate-500">Minha sequência</span><strong id="stat-streak" class="mt-3 block text-3xl font-extrabold text-amber-400">0</strong><span class="text-xs text-slate-500">semanas ativas</span></div>
+              <div class="rounded-2xl border border-slate-700 bg-slate-900 p-5"><span class="text-xs font-bold uppercase tracking-wider text-slate-500">Treinos do time</span><strong id="stat-team-week" class="mt-3 block text-3xl font-extrabold text-white">0</strong><span class="text-xs text-slate-500">nesta semana</span></div>
+              <div class="rounded-2xl border border-slate-700 bg-slate-900 p-5"><span class="text-xs font-bold uppercase tracking-wider text-slate-500">Pessoas no grupo</span><strong id="stat-members" class="mt-3 block text-3xl font-extrabold text-white">0</strong></div>
+            </div>
+
+            <div class="grid items-start gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+              <div class="rounded-2xl border border-slate-700 bg-slate-900 p-6">
+                <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-amber-400">Check-in</p>
+                <h2 class="mt-2 text-xl font-extrabold text-white">Treino concluído</h2>
+                <form id="checkin-form" class="mt-6 space-y-4">
+                  <div>
+                    <label for="checkin-date" class="field-label">Data do treino</label>
+                    <input id="checkin-date" class="field-control" name="date" type="date" required />
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label for="checkin-minutes" class="field-label">Duração</label>
+                      <div class="relative"><input id="checkin-minutes" class="field-control pr-12" name="minutes" type="number" min="1" max="600" placeholder="40" required /><span class="absolute right-3 top-3.5 text-xs text-slate-500">min</span></div>
+                    </div>
+                    <div>
+                      <label for="checkin-distance" class="field-label">Distância</label>
+                      <div class="relative"><input id="checkin-distance" class="field-control pr-10" name="distance" type="number" min="0" max="100" step="0.01" placeholder="5,0" required /><span class="absolute right-3 top-3.5 text-xs text-slate-500">km</span></div>
+                    </div>
+                  </div>
+                  <div>
+                    <label for="checkin-feeling" class="field-label">Como foi?</label>
+                    <select id="checkin-feeling" name="feeling" class="field-control" required>
+                      <option value="Leve">Leve — sobrou energia</option>
+                      <option value="Bom" selected>Bom — no ritmo certo</option>
+                      <option value="Puxado">Puxado — exigiu bastante</option>
+                    </select>
+                  </div>
+                  <p id="checkin-message" class="hidden rounded-xl px-4 py-3 text-sm" role="status"></p>
+                  <button id="checkin-submit" type="submit" class="w-full rounded-xl bg-amber-400 px-5 py-3.5 text-sm font-extrabold text-slate-950 transition hover:bg-amber-300 disabled:cursor-wait disabled:opacity-60">Confirmar check-in</button>
+                </form>
+              </div>
+
+              <div class="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
+                <div class="border-b border-slate-800 px-6 py-5">
+                  <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-amber-400">Placar de consistência</p>
+                  <h2 class="mt-2 text-xl font-extrabold text-white">O ritmo do time</h2>
+                </div>
+                <div id="leaderboard-list"></div>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-700 bg-slate-900">
+              <div class="border-b border-slate-800 px-6 py-5">
+                <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-amber-400">Atividades recentes</p>
+                <h2 class="mt-2 text-xl font-extrabold text-white">Mural do escritório</h2>
+              </div>
+              <div id="activity-list" class="grid gap-px bg-slate-800 sm:grid-cols-2"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="site-footer" class="border-t border-slate-800/80 px-5 py-7 text-center text-xs text-slate-600">
+      Ritmo Coletivo · Evolução consistente, um treino de cada vez.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const form = document.getElementById("runner-form");
+      const formView = document.getElementById("form-view");
+      const planView = document.getElementById("plan-view");
+      const planContainer = document.getElementById("print-plan");
+      const editButton = document.getElementById("edit-button");
+      const printButton = document.getElementById("print-button");
+      const trainingDaysFieldset = document.getElementById("training-days-fieldset");
+      const dayChoiceHint = document.getElementById("day-choice-hint");
+      const dayChoiceCount = document.getElementById("day-choice-count");
+      const dayChoiceError = document.getElementById("day-choice-error");
+      const frequencyInputs = [...document.querySelectorAll('input[name="frequencia"]')];
+      const trainingDayInputs = [...document.querySelectorAll(".training-day")];
+      const officeView = document.getElementById("office-view");
+      const officeAuthView = document.getElementById("office-auth-view");
+      const officeDashboard = document.getElementById("office-dashboard");
+      const officeAuthForm = document.getElementById("office-auth-form");
+      const checkinForm = document.getElementById("checkin-form");
+      const projectId = "ewtyietgqdenknahvltm";
+      const publicAnonKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3dHlpZXRncWRlbmtuYWh2bHRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NTUxMzIsImV4cCI6MjEwNzAzMTEzMn0.WxxVeKKADL0mJMuWYQxXATvD-RwfUT5loDoB5ZzAoLQ";
+      const supabaseClient = window.supabase.createClient(
+        `https://${projectId}.supabase.co`,
+        publicAnonKey,
+      );
+      const apiBase = `https://${projectId}.supabase.co/functions/v1/server/make-server-b421fc39`;
+      let isRegisterMode = false;
+
+      function normalizeUsername(value) {
+        return value
+          .trim()
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9._-]/g, "");
+      }
+
+      function setPage(view) {
+        formView.classList.toggle("hidden", view !== "form");
+        planView.classList.toggle("hidden", view !== "plan");
+        officeView.classList.toggle("hidden", view !== "office");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function setAuthError(message = "") {
+        const element = document.getElementById("auth-error");
+        element.textContent = message;
+        element.classList.toggle("hidden", !message);
+      }
+
+      function setCheckinMessage(message = "", success = false) {
+        const element = document.getElementById("checkin-message");
+        element.textContent = message;
+        element.className = `rounded-xl px-4 py-3 text-sm ${
+          success
+            ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-300"
+            : "border border-red-500/20 bg-red-500/10 text-red-300"
+        }`;
+        element.classList.toggle("hidden", !message);
+      }
+
+      function setRegisterMode(enabled) {
+        isRegisterMode = enabled;
+        document.getElementById("register-name-field").classList.toggle("hidden", !enabled);
+        document.getElementById("register-code-field").classList.toggle("hidden", !enabled);
+        document.getElementById("office-name").required = enabled;
+        document.getElementById("office-invite-code").required = enabled;
+        document.getElementById("auth-title").textContent = enabled
+          ? "Criar meu acesso"
+          : "Entrar no grupo";
+        document.getElementById("auth-description").textContent = enabled
+          ? "Escolha um usuário fácil de lembrar e uma senha segura."
+          : "Use seu nome de usuário e senha.";
+        document.getElementById("auth-submit").textContent = enabled ? "Criar e entrar" : "Entrar";
+        document.getElementById("auth-mode-toggle").textContent = enabled
+          ? "Já tenho acesso"
+          : "Primeiro acesso? Criar minha conta";
+        document.getElementById("office-password").autocomplete = enabled
+          ? "new-password"
+          : "current-password";
+        setAuthError();
+      }
+
+      async function authenticatedFetch(path, options = {}) {
+        const {
+          data: { session },
+        } = await supabaseClient.auth.getSession();
+        if (!session) throw new Error("Sua sessão expirou. Entre novamente.");
+
+        const response = await fetch(`${apiBase}${path}`, {
+          ...options,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+            ...(options.headers || {}),
+          },
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(payload.error || "Não foi possível concluir a operação.");
+        return payload;
+      }
+
+      function formatActivityDate(value) {
+        return new Intl.DateTimeFormat("pt-BR", {
+          day: "2-digit",
+          month: "short",
+        }).format(new Date(`${value}T12:00:00`));
+      }
+
+      function renderDashboard(data) {
+        const me = data.me || {};
+        document.getElementById("stat-week").textContent = me.weekCount || 0;
+        document.getElementById("stat-streak").textContent = me.streak || 0;
+        document.getElementById("stat-team-week").textContent = data.team.weekCount || 0;
+        document.getElementById("stat-members").textContent = data.team.members || 0;
+
+        const leaderboard = document.getElementById("leaderboard-list");
+        leaderboard.innerHTML = data.leaderboard.length
+          ? data.leaderboard
+              .map(
+                (member, index) => `
+                  <div class="grid grid-cols-[2rem_1fr_auto] items-center gap-3 border-t border-slate-800 px-5 py-4 first:border-t-0">
+                    <span class="grid h-8 w-8 place-items-center rounded-lg ${index < 3 ? "bg-amber-400 text-slate-950" : "bg-slate-800 text-slate-400"} text-xs font-extrabold">${index + 1}</span>
+                    <div class="min-w-0">
+                      <p class="truncate text-sm font-bold text-white">${escapeHtml(member.name)}</p>
+                      <p class="mt-0.5 text-xs text-slate-500">${member.totalDistance.toLocaleString("pt-BR")} km no total</p>
+                    </div>
+                    <div class="text-right">
+                      <strong class="block text-sm text-amber-400">${member.weekCount} ${member.weekCount === 1 ? "treino" : "treinos"}</strong>
+                      <span class="text-[10px] text-slate-500">${member.streak} sem. seguidas</span>
+                    </div>
+                  </div>
+                `,
+              )
+              .join("")
+          : '<p class="px-6 py-8 text-center text-sm text-slate-500">O placar começa com o primeiro check-in.</p>';
+
+        const activityList = document.getElementById("activity-list");
+        activityList.innerHTML = data.recent.length
+          ? data.recent
+              .map(
+                (activity) => `
+                  <article class="flex gap-4 bg-slate-900 p-5">
+                    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-amber-400/10 text-sm font-extrabold text-amber-400">${escapeHtml(activity.name.charAt(0).toUpperCase())}</span>
+                    <div class="min-w-0">
+                      <p class="text-sm text-slate-300"><strong class="text-white">${escapeHtml(activity.name)}</strong> concluiu um treino</p>
+                      <p class="mt-1 text-xs text-slate-500">${activity.distance.toLocaleString("pt-BR")} km · ${activity.minutes} min · ${escapeHtml(activity.feeling)}</p>
+                      <p class="mt-2 text-[10px] font-bold uppercase tracking-wider text-slate-600">${formatActivityDate(activity.date)}</p>
+                    </div>
+                  </article>
+                `,
+              )
+              .join("")
+          : '<p class="bg-slate-900 px-6 py-8 text-center text-sm text-slate-500 sm:col-span-2">Nenhum treino registrado ainda. Faça o primeiro check-in.</p>';
+      }
+
+      async function loadDashboard() {
+        const loading = document.getElementById("dashboard-loading");
+        const content = document.getElementById("dashboard-content");
+        loading.classList.remove("hidden");
+        content.classList.add("hidden");
+        loading.textContent = "Carregando o placar...";
+
+        try {
+          const data = await authenticatedFetch("/dashboard");
+          renderDashboard(data);
+          loading.classList.add("hidden");
+          content.classList.remove("hidden");
+        } catch (error) {
+          loading.textContent = error.message;
+        }
+      }
+
+      async function showOffice() {
+        setPage("office");
+        const {
+          data: { session },
+        } = await supabaseClient.auth.getSession();
+
+        officeAuthView.classList.toggle("hidden", Boolean(session));
+        officeDashboard.classList.toggle("hidden", !session);
+        if (session) {
+          const name = session.user.user_metadata?.name || session.user.user_metadata?.username;
+          document.getElementById("dashboard-greeting").textContent = `Olá, ${name?.split(" ")[0] || "corredor"}!`;
+          document.getElementById("checkin-date").value = new Date().toISOString().slice(0, 10);
+          await loadDashboard();
+        }
+      }
+
+      document.getElementById("office-button").addEventListener("click", showOffice);
+      document.getElementById("home-link").addEventListener("click", (event) => {
+        event.preventDefault();
+        setPage("form");
+      });
+      document.getElementById("auth-mode-toggle").addEventListener("click", () => {
+        setRegisterMode(!isRegisterMode);
+      });
+
+      officeAuthForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!officeAuthForm.reportValidity()) return;
+
+        const submitButton = document.getElementById("auth-submit");
+        const username = normalizeUsername(document.getElementById("office-username").value);
+        const password = document.getElementById("office-password").value;
+        submitButton.disabled = true;
+        setAuthError();
+
+        try {
+          if (isRegisterMode) {
+            const response = await fetch(`${apiBase}/register`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                name: document.getElementById("office-name").value,
+                username,
+                password,
+                inviteCode: document.getElementById("office-invite-code").value,
+              }),
+            });
+            const payload = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(payload.error || "Não foi possível criar a conta.");
+          }
+
+          const { error } = await supabaseClient.auth.signInWithPassword({
+            email: `${username}@ritmo-coletivo.local`,
+            password,
+          });
+          if (error) {
+            throw new Error(
+              isRegisterMode
+                ? "A conta foi criada, mas não foi possível entrar."
+                : "Usuário ou senha incorretos.",
+            );
+          }
+
+          officeAuthForm.reset();
+          setRegisterMode(false);
+          await showOffice();
+        } catch (error) {
+          setAuthError(error.message);
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+
+      document.getElementById("logout-button").addEventListener("click", async () => {
+        await supabaseClient.auth.signOut();
+        officeDashboard.classList.add("hidden");
+        officeAuthView.classList.remove("hidden");
+      });
+
+      checkinForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!checkinForm.reportValidity()) return;
+
+        const submitButton = document.getElementById("checkin-submit");
+        const checkinData = new FormData(checkinForm);
+        submitButton.disabled = true;
+        setCheckinMessage();
+
+        try {
+          await authenticatedFetch("/checkins", {
+            method: "POST",
+            body: JSON.stringify({
+              date: checkinData.get("date"),
+              minutes: Number(checkinData.get("minutes")),
+              distance: Number(checkinData.get("distance")),
+              feeling: checkinData.get("feeling"),
+            }),
+          });
+          const date = document.getElementById("checkin-date").value;
+          checkinForm.reset();
+          document.getElementById("checkin-date").value = date;
+          document.getElementById("checkin-feeling").value = "Bom";
+          setCheckinMessage("Treino registrado. O placar já foi atualizado.", true);
+          await loadDashboard();
+        } catch (error) {
+          setCheckinMessage(error.message);
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+
+      const schedules = {
+        2: [2, 6],
+        3: [2, 4, 7],
+        4: [1, 3, 5, 7],
+        5: [1, 2, 4, 5, 7],
+      };
+
+      const weekdays = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+      const levels = {
+        walk: "Caminhada predominante",
+        mixed: "Corrida e caminhada",
+        run: "Corrida contínua",
+      };
+
+      function syncTrainingDays(useSuggestedDays = false) {
+        const frequency = Number(
+          frequencyInputs.find((input) => input.checked)?.value || 3,
+        );
+
+        if (useSuggestedDays) {
+          trainingDayInputs.forEach((input) => {
+            input.checked = schedules[frequency].includes(Number(input.value));
+          });
+        }
+
+        const selectedCount = trainingDayInputs.filter((input) => input.checked).length;
+        const reachedLimit = selectedCount >= frequency;
+        trainingDayInputs.forEach((input) => {
+          input.disabled = !input.checked && reachedLimit;
+        });
+
+        dayChoiceHint.textContent = `Escolha ${frequency} ${frequency === 1 ? "dia" : "dias"}. O plano vai respeitar sua rotina.`;
+        dayChoiceCount.textContent = `${selectedCount} de ${frequency}`;
+        dayChoiceError.classList.toggle("hidden", selectedCount === frequency);
+      }
+
+      frequencyInputs.forEach((input) => {
+        input.addEventListener("change", () => syncTrainingDays(true));
+      });
+      trainingDayInputs.forEach((input) => {
+        input.addEventListener("change", () => syncTrainingDays());
+      });
+      syncTrainingDays();
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function formatNumber(value) {
+        return Number.isInteger(value) ? String(value) : value.toFixed(1).replace(".", ",");
+      }
+
+      function getWorkout(level, workoutIndex, week, totalWeeks, distance, frequency) {
+        const distanceBoost = { 5: 0, 10: 4, 15: 7, 21: 11 }[distance];
+        const baseMinutes = { walk: 24, mixed: 30, run: 36 }[level];
+        const recoveryWeek = week % 4 === 0 && week !== totalWeeks;
+        const progression = recoveryWeek ? (week - 1) * 1.35 : (week - 1) * 1.9;
+        let minutes = Math.round(baseMinutes + distanceBoost + progression);
+        const typeCycle = ["Leve", "Intervalado", "Ritmo", "Recuperação", "Longo"];
+        let type = typeCycle[workoutIndex % typeCycle.length];
+
+        if (workoutIndex === 0) type = "Leve";
+        if (workoutIndex === 3) type = "Recuperação";
+        if (workoutIndex === 4) type = "Ritmo";
+        if (workoutIndex === frequency - 1) type = "Longo";
+
+        if (type === "Longo") minutes = Math.round(minutes * 1.3);
+        if (type === "Recuperação") minutes = Math.round(minutes * 0.78);
+        if (recoveryWeek) minutes = Math.round(minutes * 0.88);
+
+        let detail = "";
+        if (level === "walk") {
+          const run = Math.min(5, 1 + Math.floor((week - 1) / 2) * 0.5);
+          const walk = Math.max(1, 3 - Math.floor((week - 1) / 3) * 0.5);
+          detail = `Alterne ${formatNumber(run)} min trotando + ${formatNumber(walk)} min caminhando`;
+        } else if (level === "mixed") {
+          const run = Math.min(12, 4 + week);
+          const walk = Math.max(1, 2 - Math.floor((week - 1) / 4) * 0.5);
+          detail = `Alterne ${run} min correndo + ${formatNumber(walk)} min caminhando`;
+        } else {
+          const descriptions = {
+            Leve: "Corrida contínua confortável, sem buscar velocidade",
+            Intervalado: "6 a 8 estímulos de 1 min forte / 2 min leve",
+            Ritmo: "Ritmo estável e controlado na parte central",
+            Recuperação: "Corrida bem leve, priorizando soltar as pernas",
+            Longo: "Corrida contínua leve; caminhe 1 min se necessário",
+          };
+          detail = descriptions[type];
+        }
+
+        if (week === totalWeeks && workoutIndex === 0) {
+          return {
+            type: "Ativação",
+            minutes: Math.max(20, Math.round(minutes * 0.65)),
+            detail: "Treino leve para chegar descansado ao desafio",
+          };
+        }
+
+        return { type, minutes, detail };
+      }
+
+      function createWeek(week, data) {
+        const trainingDays = data.trainingDays;
+        let workoutIndex = 0;
+        let strengthAdded = 0;
+
+        const rows = weekdays
+          .map((day, index) => {
+            const dayNumber = index + 1;
+            const isTraining = trainingDays.includes(dayNumber);
+            let badge = "Descanso";
+            let title = "Recuperação";
+            let description = "Descanso completo ou caminhada relaxante de até 20 min.";
+            let badgeClass = "bg-slate-700 text-slate-300";
+
+            if (isTraining) {
+              const workout = getWorkout(
+                data.level,
+                workoutIndex,
+                week,
+                data.weeks,
+                data.distance,
+                data.frequency,
+              );
+              badge = `Treino ${workoutIndex + 1}`;
+              title = `${workout.type} · ${workout.minutes} min`;
+              description = `5 min de aquecimento. ${workout.detail}. Finalize desacelerando.`;
+              badgeClass = "bg-amber-400 text-slate-950";
+              workoutIndex += 1;
+            } else if (
+              data.strength === "Sim" &&
+              strengthAdded < (data.frequency >= 4 ? 1 : 2) &&
+              !trainingDays.includes(dayNumber - 1)
+            ) {
+              badge = "Força";
+              title = "Fortalecimento · 25–35 min";
+              description = "Priorize core, glúteos, panturrilhas e mobilidade, sem chegar à falha.";
+              badgeClass = "bg-orange-500/20 text-orange-300";
+              strengthAdded += 1;
+            } else if (data.strength === "Não" && strengthAdded === 0 && dayNumber > 2) {
+              badge = "Mobilidade";
+              title = "Rotina opcional · 12 min";
+              description = "Mobilidade de quadril e tornozelos, prancha e elevação de panturrilhas.";
+              badgeClass = "bg-sky-500/15 text-sky-300";
+              strengthAdded += 1;
+            }
+
+            return `
+              <div class="workout-row grid gap-2 border-t border-slate-700/70 px-5 py-4 sm:grid-cols-[3.5rem_6rem_1fr] sm:items-center sm:gap-4">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 print-dark-text">${day}</span>
+                <span class="w-fit rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider ${badgeClass}">${badge}</span>
+                <div>
+                  <p class="text-sm font-bold text-slate-100 print-dark-text">${title}</p>
+                  <p class="mt-1 text-xs leading-5 text-slate-400 print-dark-text">${description}</p>
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+
+        const isRecovery = week % 4 === 0 && week !== data.weeks;
+        const phase =
+          week === data.weeks
+            ? "Semana do desafio"
+            : isRecovery
+              ? "Assimilação"
+              : week <= Math.ceil(data.weeks / 3)
+                ? "Construção de base"
+                : "Evolução";
+
+        return `
+          <article class="week-card overflow-hidden rounded-2xl border border-slate-700 bg-slate-800/45">
+            <div class="flex items-center justify-between gap-4 px-5 py-4">
+              <div class="flex items-center gap-3">
+                <span class="grid h-9 w-9 place-items-center rounded-lg bg-slate-700 text-sm font-extrabold text-amber-300">${week}</span>
+                <div>
+                  <h3 class="font-extrabold text-white print-dark-text">Semana ${week}</h3>
+                  <p class="text-xs text-slate-400 print-dark-text">${phase}</p>
+                </div>
+              </div>
+              <span class="hidden text-xs font-semibold text-slate-500 sm:block">${data.frequency} treinos de corrida</span>
+            </div>
+            <div>${rows}</div>
+          </article>
+        `;
+      }
+
+      function renderPlan(data) {
+        const createdAt = new Intl.DateTimeFormat("pt-BR", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }).format(new Date());
+
+        const weeksHtml = Array.from({ length: data.weeks }, (_, index) =>
+          createWeek(index + 1, data),
+        ).join("");
+
+        const medicalNote = data.notes
+          ? `
+            <div class="medical-card rounded-2xl border border-amber-500/25 bg-amber-500/5 p-5">
+              <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-amber-400">Observação registrada</p>
+              <p class="mt-2 text-sm leading-6 text-slate-300 print-dark-text">${escapeHtml(data.notes)}</p>
+            </div>
+          `
+          : "";
+
+        planContainer.innerHTML = `
+          <div class="print-header relative overflow-hidden bg-slate-950 px-6 py-8 sm:px-10 sm:py-10">
+            <div class="absolute -right-16 -top-16 h-52 w-52 rounded-full bg-amber-400/10"></div>
+            <div class="relative">
+              <div class="flex flex-col justify-between gap-7 sm:flex-row sm:items-end">
+                <div>
+                  <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-amber-400">Plano personalizado</p>
+                  <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                    Bora correr, ${escapeHtml(data.name.split(" ")[0])}?
+                  </h1>
+                  <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+                    Seu caminho para completar ${data.distance} km com consistência, controle e confiança.
+                  </p>
+                </div>
+                <div class="shrink-0 sm:text-right">
+                  <p class="text-xs text-slate-500">Criado em</p>
+                  <p class="mt-1 text-sm font-semibold text-slate-300">${createdAt}</p>
+                </div>
+              </div>
+              <div class="mt-8 grid gap-px overflow-hidden rounded-2xl border border-slate-700 bg-slate-700 sm:grid-cols-4">
+                <div class="bg-slate-900 px-4 py-4">
+                  <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Meta</span>
+                  <strong class="mt-1 block text-sm text-white">${data.distance} km em ${data.months} ${data.months === 1 ? "mês" : "meses"}</strong>
+                </div>
+                <div class="bg-slate-900 px-4 py-4">
+                  <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Duração</span>
+                  <strong class="mt-1 block text-sm text-white">${data.weeks} semanas</strong>
+                </div>
+                <div class="bg-slate-900 px-4 py-4">
+                  <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Frequência</span>
+                  <strong class="mt-1 block text-sm text-white">${data.frequency}x por semana</strong>
+                  <span class="mt-1 block text-[10px] text-slate-500">${data.trainingDays.map((day) => weekdays[day - 1]).join(", ")}</span>
+                </div>
+                <div class="bg-slate-900 px-4 py-4">
+                  <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Ponto de partida</span>
+                  <strong class="mt-1 block text-sm text-white">${levels[data.level]}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-5 p-5 sm:p-8">
+            <div class="rounded-2xl border border-slate-700 bg-slate-800/60 p-5">
+              <div class="flex gap-3">
+                <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-amber-400/15 text-amber-400">
+                  <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>
+                </span>
+                <p class="text-sm leading-6 text-slate-300 print-dark-text">
+                  <strong>Como usar:</strong> distribua os treinos conforme sugerido e evite dias intensos consecutivos. Os minutos são uma referência: reduza o volume se sentir dor ou fadiga fora do normal.
+                </p>
+              </div>
+            </div>
+
+            ${medicalNote}
+
+            <div class="space-y-5">${weeksHtml}</div>
+
+            <section class="tips-card rounded-2xl border border-slate-700 bg-slate-800/60 p-5 sm:p-6">
+              <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-amber-400">Fundamentos para evoluir</p>
+              <h2 class="mt-2 text-xl font-extrabold text-white print-dark-text">Dicas essenciais</h2>
+              <div class="mt-5 grid gap-4 sm:grid-cols-3">
+                <div>
+                  <h3 class="text-sm font-bold text-slate-100 print-dark-text">Hidrate-se</h3>
+                  <p class="mt-1 text-xs leading-5 text-slate-400 print-dark-text">Beba água ao longo do dia. Em treinos mais longos ou quentes, planeje reposição durante o percurso.</p>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-slate-100 print-dark-text">Ritmo conversacional</h3>
+                  <p class="mt-1 text-xs leading-5 text-slate-400 print-dark-text">Nos treinos leves, você deve conseguir falar frases completas. Se não consegue, desacelere.</p>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-slate-100 print-dark-text">Aqueça primeiro</h3>
+                  <p class="mt-1 text-xs leading-5 text-slate-400 print-dark-text">Comece com 5 minutos de caminhada e movimentos articulares. Termine reduzindo o ritmo aos poucos.</p>
+                </div>
+              </div>
+            </section>
+
+            <p class="px-2 pb-2 text-center text-[11px] leading-5 text-slate-500 print-dark-text">
+              Este plano tem caráter educativo e não substitui avaliação médica ou acompanhamento profissional.
+            </p>
+          </div>
+        `;
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+
+        const formData = new FormData(form);
+        const months = Number(formData.get("prazo"));
+        const frequency = Number(formData.get("frequencia"));
+        const trainingDays = formData.getAll("dias").map(Number);
+
+        if (trainingDays.length !== frequency) {
+          dayChoiceError.classList.remove("hidden");
+          trainingDaysFieldset.scrollIntoView({ behavior: "smooth", block: "center" });
+          return;
+        }
+
+        const data = {
+          name: formData.get("nome").trim(),
+          distance: Number(formData.get("distancia")),
+          months,
+          weeks: months * 4,
+          frequency,
+          trainingDays,
+          level: formData.get("nivel"),
+          strength: formData.get("fortalecimento"),
+          notes: formData.get("observacoes").trim(),
+        };
+
+        renderPlan(data);
+        formView.classList.add("hidden");
+        planView.classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        const endpoint = form.dataset.endpoint;
+        if (endpoint) {
+          try {
+            await fetch(endpoint, {
+              method: "POST",
+              body: formData,
+              headers: { Accept: "application/json" },
+            });
+          } catch (error) {
+            console.warn("Não foi possível enviar os dados ao endpoint configurado.", error);
+          }
+        }
+      });
+
+      editButton.addEventListener("click", () => {
+        planView.classList.add("hidden");
+        formView.classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      printButton.addEventListener("click", () => window.print());
+    </script>
+  </body>
+</html>
